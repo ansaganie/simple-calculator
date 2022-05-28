@@ -1,5 +1,3 @@
-const OPERATORS = new Set(['equals', 'plus', 'minus', 'times', 'divide']);
-
 const OPERATOR_SIGNS = {
   equals: '=',
   plus: '+',
@@ -7,6 +5,23 @@ const OPERATOR_SIGNS = {
   times: '×',
   divide: '÷',
 };
+
+const OPERATORS = new Set(Object.keys(OPERATOR_SIGNS));
+
+const NUMBER_SIGNS = {
+  one: '1',
+  two: '2',
+  three: '3',
+  four: '4',
+  five: '5',
+  six: '6',
+  seven: '7',
+  eight: '8',
+  nine: '9',
+  zero: '0',
+};
+
+const NUMBERS = new Set(Object.keys(NUMBER_SIGNS));
 
 const CALCULATOR_FUNCTIONS = {
   plus(first, second) {
@@ -117,7 +132,9 @@ export default class Calculator {
 
     const currentNumber = this.#expression[this.#currentIndex];
 
-    this.#expression[this.#currentIndex] = `${currentNumber}${value}`;
+    if (NUMBERS.has(value)) {
+      this.#expression[this.#currentIndex] = `${currentNumber}${NUMBER_SIGNS[value]}`;
+    }
 
     if (this.#expression.length >= 3) {
       this.#runCalculation();

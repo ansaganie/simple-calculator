@@ -124,7 +124,8 @@ body {
   cursor: pointer;
 }
 
-.keyboard__key:active {
+.keyboard__key:active,
+.keyboard__key--active {
   background-color: #bdbdbd;
 }
 
@@ -144,7 +145,8 @@ body {
   color: #ffffff;
 }
 
-.keyboard__key--dark:active {
+.keyboard__key--dark:active,
+.keyboard__key--dark-active {
   background-color: #575757;
   color: #ffffff;
 }
@@ -155,7 +157,8 @@ body {
   color: #ffffff;
 }
 
-.keyboard__key--light:active {
+.keyboard__key--light:active,
+.keyboard__key--light-active {
   background-color: #838383;
   color: #ffffff;
 }
@@ -170,7 +173,8 @@ body {
   border-color: #e40101;
 }
 
-.keyboard__key--blue:active {
+.keyboard__key--blue:active,
+.keyboard__key--blue-active {
   background-color: #004e97;
   color: #fff;
 }
@@ -185,7 +189,8 @@ body {
   border-color: #2e76bf;
 }
 
-.keyboard__key--red:active {
+.keyboard__key--red:active,
+.keyboard__key--red-active {
   background-color: #af0000;
   border-color: #2e76bf;
   color: #fff;
