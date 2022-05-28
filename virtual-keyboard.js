@@ -1,26 +1,28 @@
-export class VirtualKeyboard {
+export default class VirtualKeyboard {
   #keyboard;
 
-  constructor() {
+  #eventBus;
+
+  #handleKeyboardClickBound;
+
+  constructor(eventBus) {
     this.#keyboard = document.querySelector('.calculator__keyboard');
-    this.handleKeyboardClick = this.handleKeyboardClick.bind(this);
-    this.#keyboard.addEventListener('click', this.handleKeyboardClick);
+    this.#eventBus = eventBus;
+
+    this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
+    this.#keyboard.addEventListener('click', this.#handleKeyboardClickBound);
   }
 
-  handleKeyboardClick(evt) {
+  #handleKeyboardClick(evt) {
     if (!evt.target.classList.contains('keyboard__key')) {
       return;
     }
 
     const element = evt.target;
-
     const type = Array.from(element.classList).find((className) => className.startsWith('type-'));
     const value = element.id;
+    const detail = { type: type.replace('type-', ''), value };
 
-    document.dispatchEvent(
-      new CustomEvent('keyboard-click', {
-        detail: { type: type.replace('type-', ''), value },
-      }),
-    );
+    this.#eventBus.trigger(this.#eventBus.keyboardClick, detail);
   }
 }
