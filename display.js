@@ -20,8 +20,6 @@ export default class Display {
   #handleDisplay(event) {
     const { type, value } = event.detail;
 
-    console.log(type, value);
-
     switch (type) {
       case 'main':
         this.#renderToMain(value);
@@ -41,6 +39,13 @@ export default class Display {
   }
 
   #renderToMain(text) {
+    if (text.length > 22) {
+      const bar = text.substring(text.length - 22);
+      this.#main.textContent = `... ${bar}`;
+
+      return;
+    }
+
     this.#main.textContent = text;
   }
 

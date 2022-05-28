@@ -89,7 +89,7 @@ body {
 }
 
 .output__main {
-  width: 100;
+  width: 100%;
   font-size: 1.5rem;
   text-align: end;
   border-bottom: 2px solid #999998;
