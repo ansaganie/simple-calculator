@@ -25,10 +25,15 @@ const CALCULATOR_FUNCTIONS = {
 
 export default class Calculator {
   #eventBus;
+
   #handleKeyboardClickBound;
+
   #currentIndex;
+
   #expression;
+
   #result;
+
   #operations;
 
   constructor(eventBus) {

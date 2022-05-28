@@ -39,6 +39,46 @@ const KEYCODE_MAPPER = {
     type: 'number',
     value: '0',
   },
+  Numpad1: {
+    type: 'number',
+    value: '1',
+  },
+  Numpad2: {
+    type: 'number',
+    value: '2',
+  },
+  Numpad3: {
+    type: 'number',
+    value: '3',
+  },
+  Numpad4: {
+    type: 'number',
+    value: '4',
+  },
+  Numpad5: {
+    type: 'number',
+    value: '5',
+  },
+  Numpad6: {
+    type: 'number',
+    value: '6',
+  },
+  Numpad7: {
+    type: 'number',
+    value: '7',
+  },
+  Numpad8: {
+    type: 'number',
+    value: '8',
+  },
+  Numpad9: {
+    type: 'number',
+    value: '9',
+  },
+  Numpad0: {
+    type: 'number',
+    value: '0',
+  },
   Minus: {
     type: 'operator',
     value: 'minus',
@@ -62,7 +102,31 @@ const KEYCODE_MAPPER = {
   Period: {
     type: 'modifier',
     value: 'dot',
-  }
+  },
+  NumpadDecimal: {
+    type: 'modifier',
+    value: 'dot',
+  },
+  NumpadAdd: {
+    type: 'operator',
+    value: 'plus',
+  },
+  NumpadSubtract: {
+    type: 'operator',
+    value: 'minus',
+  },
+  NumpadMultiply: {
+    type: 'operator',
+    value: 'times',
+  },
+  NumpadDivide: {
+    type: 'operator',
+    value: 'divide',
+  },
+  NumpadEnter: {
+    type: 'operator',
+    value: 'equals',
+  },
 };
 
 const KEYCODE = new Set(Object.keys(KEYCODE_MAPPER));
@@ -72,7 +136,7 @@ const KEYCODE_MAPPER_SHIFT = {
     type: 'operator',
     value: 'plus',
   },
-  Digit8: {
+  Numpad8: {
     type: 'operator',
     value: 'times',
   },
@@ -84,16 +148,19 @@ const KEYCODE_MAPPER_SHIFT = {
     type: 'control',
     value: 'clear',
   },
-}
+};
 
 const KEYCODE_SHIFT = new Set(Object.keys(KEYCODE_MAPPER_SHIFT));
 
-const SHIFT_CODES = new Set(['ShiftLeft', 'ShiftRight']) ;
+const SHIFT_CODES = new Set(['ShiftLeft', 'ShiftRight']);
 
 export default class PhysicalKeyboard {
   #eventBus;
+
   #handleKeydownBound;
+
   #handleKeyupBound;
+
   #isShiftDown;
 
   constructor(eventBus) {
@@ -120,8 +187,6 @@ export default class PhysicalKeyboard {
     }
 
     if (this.#isShiftDown && KEYCODE_SHIFT.has(CODE)) {
-      console.log(KEYCODE_MAPPER_SHIFT[CODE]);
-    console.log('with shift');
       this.#eventBus.trigger(this.#eventBus.keyboard, KEYCODE_MAPPER_SHIFT[CODE]);
     }
   }

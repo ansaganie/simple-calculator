@@ -10,7 +10,5 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rules: {
-    'lines-between-class-members': 'never',
-  },
+  rules: {},
 };
