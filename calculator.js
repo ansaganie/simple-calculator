@@ -1,6 +1,6 @@
 const OPERATORS = new Set(['equals', 'plus', 'minus', 'times', 'divide']);
 
-const OPERATOR_SIGNS_MAP = {
+const OPERATOR_SIGNS = {
   equals: '=',
   plus: '+',
   minus: '-',
@@ -25,15 +25,10 @@ const CALCULATOR_FUNCTIONS = {
 
 export default class Calculator {
   #eventBus;
-
   #handleKeyboardClickBound;
-
   #currentIndex;
-
   #expression;
-
   #result;
-
   #operations;
 
   constructor(eventBus) {
@@ -42,7 +37,7 @@ export default class Calculator {
     this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
 
     this.#eventBus.subscribe(
-      this.#eventBus.keyboardClick,
+      this.#eventBus.keyboard,
       this.#handleKeyboardClickBound,
     );
 
@@ -100,7 +95,7 @@ export default class Calculator {
   #updateMainDisplay() {
     const value = this.#expression.reduce((result, elem) => {
       if (OPERATORS.has(elem)) {
-        return `${result} ${OPERATOR_SIGNS_MAP[elem]}`;
+        return `${result} ${OPERATOR_SIGNS[elem]}`;
       }
 
       return `${result} ${elem}`;
@@ -204,6 +199,7 @@ export default class Calculator {
   }
 
   #handlePlusminus() {
+    console.log('plusminus');
     const lastElementIndex = this.#expression.length - 1;
     let lastElement = this.#expression[lastElementIndex];
 

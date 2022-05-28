@@ -23,6 +23,6 @@ export default class VirtualKeyboard {
     const value = element.id;
     const detail = { type: type.replace('type-', ''), value };
 
-    this.#eventBus.trigger(this.#eventBus.keyboardClick, detail);
+    this.#eventBus.trigger(this.#eventBus.keyboard, detail);
   }
 }

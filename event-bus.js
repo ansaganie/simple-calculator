@@ -7,7 +7,7 @@ export default class EventBus {
 
   constructor() {
     this.#bus = document.createElement('span');
-    this.keyboardClick = 'keyboard-click';
+    this.keyboard = 'keyboard';
     this.display = 'display';
   }
 
