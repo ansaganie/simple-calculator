@@ -68,6 +68,10 @@ export default class Calculator {
         this.#handleModifier(value);
         break;
 
+      case 'control':
+        this.#handleControl(value);
+        break;
+
       default:
         break;
     }
@@ -123,28 +127,30 @@ export default class Calculator {
   }
 
   #handleOperator(operator) {
-    const lastElementIndex = this.#expression.length - 1;
-    const lastElement = this.#expression[lastElementIndex];
+    if (this.#expression.length > 0) {
+      const lastElementIndex = this.#expression.length - 1;
+      const lastElement = this.#expression[lastElementIndex];
 
-    if (OPERATORS.has(lastElement)) {
-      this.#expression[lastElementIndex] = operator;
-    } else {
-      this.#expression.push(operator);
-      this.#currentIndex += 2;
+      if (operator === 'equals') {
+        this.#handleEquals();
+
+        return;
+      }
+
+      if (OPERATORS.has(lastElement)) {
+        this.#expression[lastElementIndex] = operator;
+      } else {
+        this.#expression.push(operator);
+        this.#currentIndex += 2;
+      }
+
+      this.#updateMainDisplay();
     }
-
-    if (operator === 'equals') {
-      this.#handleEquals();
-
-      return;
-    }
-
-    this.#updateMainDisplay();
   }
 
-  #handleModifier(value) {
+  #handleModifier(type) {
     if (this.#expression.length > 0) {
-      switch (value) {
+      switch (type) {
         case 'dot':
           this.#handleDot();
 
@@ -160,25 +166,30 @@ export default class Calculator {
 
           break;
 
-        case 'clear':
-          this.#handleClear();
-
-          break;
-
         default:
           break;
       }
     }
   }
 
-  #handleEquals() {
-    this.#runCalculation();
-    this.#expression.push(this.#result);
-    this.#updateMainDisplay();
+  #handleControl(type) {
+    if (type === 'clear') {
+      this.#handleClear();
+    }
+  }
 
-    this.#expression = [];
-    this.#currentIndex = 0;
-    this.#result = 0;
+  #handleEquals() {
+    if (this.#expression.length >= 3) {
+      this.#expression.push('equals');
+      this.#runCalculation();
+      this.#expression.push(this.#result);
+
+      this.#updateMainDisplay();
+
+      this.#expression = [];
+      this.#currentIndex = 0;
+      this.#result = 0;
+    }
   }
 
   #handleDot() {
@@ -205,6 +216,8 @@ export default class Calculator {
     }
 
     this.#expression[lastElementIndex] = lastElement;
+
+    this.#runCalculation();
     this.#updateMainDisplay();
   }
 

@@ -67,7 +67,7 @@ export default class Display {
   }
 
   #renderToResult(text) {
-    if (!text) {
+    if (text === undefined) {
       this.#clearResult();
 
       return;
