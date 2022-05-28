@@ -7,7 +7,50 @@
     <title>Calculator 888</title>
   </head>
   <body>
-    <div id="app"></div>
+    <main class="calculator">
+      <div class="calulator__bg">
+        <div class="calculator__body">
+          <section class="calculator__header">
+            <div class="calculator__bookmark">
+              <img src="./assets/yellow_star.svg" alt="Star icon" width="20" height="20" />
+              <span> Добавить в закладки </span>
+            </div>
+            <div class="calculator__name">
+              <span> Calculator888.ru </span>
+            </div>
+          </section>
+          <section class="calculator__output">
+            <div class="output__display">
+              <output class="output__main">0</output>
+              <output class="output__result">0</output>
+            </div>
+          </section>
+          <section class="calculator__controls">
+            <div class="calculator__keyboard">
+              <button class="keyboard__key number" id="seven">7</button>
+              <button class="keyboard__key number" id="eight">8</button>
+              <button class="keyboard__key number" id="nine">9</button>
+              <button class="keyboard__key keyboard__key--light operator" id="plusminus">&plusmn;</button>
+              <button class="keyboard__key keyboard__key--light operator" id="delete">&rarr;</button>
+              <button class="keyboard__key number" id="four">4</button>
+              <button class="keyboard__key number" id="five">5</button>
+              <button class="keyboard__key number" id="six">6</button>
+              <button class="keyboard__key keyboard__key--dark operator" id="times">&times;</button>
+              <button class="keyboard__key keyboard__key--dark operator" id="divide">&divide;</button>
+              <button class="keyboard__key number" id="one">1</button>
+              <button class="keyboard__key number" id="two">2</button>
+              <button class="keyboard__key number" id="three">3</button>
+              <button class="keyboard__key keyboard__key--dark operator" id="minus">&minus;</button>
+              <button class="keyboard__key keyboard__key--tall keyboard__key--blue operator" id="equals">&equals;</button>
+              <button class="keyboard__key keyboard__key--red operator" id="clear">C</button>
+              <button class="keyboard__key number" id="zero">0</button>
+              <button class="keyboard__key dot" id="dot">.</button>
+              <button class="keyboard__key keyboard__key--dark operator" id="plus">&plus;</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
