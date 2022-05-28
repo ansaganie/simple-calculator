@@ -6,13 +6,72 @@ body {
   line-height: 1.2;
 }
 
+.calculator__bg {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background-color: #6c9cba;
+}
+
 .calculator__body {
+  padding: 8px 24px;
+  padding-bottom: 24px;
+
+  width: max-content;
+
   display: flex;
   flex-direction: column;
+
+  border: 4px solid #014b96;
+  border-radius: 8px;
+  background-color: #e8f5ff;
+}
+
+.calculator__header {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calculator__bookmark {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  background-color: transparent;
+  border: none;
+
+  cursor: pointer;
+}
+
+.calculator__bookmark span {
+  font-size: 12px;
+  color: #89afd4;
+}
+
+.calculator__bookmark:hover span {
+  color: #4587c8;
+}
+
+.calculator__bookmark:hover img {
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+.calculator__link {
+  display: flex;
+}
+
+.calculator__link a {
+  color: #467b9a;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .calculator__output {
-  margin-bottom: 18px;
+  margin-bottom: 1rem;
 }
 
 .output {
@@ -56,7 +115,7 @@ body {
   align-items: center;
 
   background-color: #eeeeee;
-  border: 1px solid #dddfe1;
+  border: 1px solid #c8cacb;
   border-radius: 4px;
 
   color: #1d456c;
@@ -67,7 +126,6 @@ body {
 
 .keyboard__key:active {
   background-color: #bdbdbd;
-  color: #3365bc;
 }
 
 .keyboard__key:hover {
@@ -86,9 +144,19 @@ body {
   color: #ffffff;
 }
 
+.keyboard__key--dark:active {
+  background-color: #575757;
+  color: #ffffff;
+}
+
 .keyboard__key--light {
   background-color: #afaeae;
   font-weight: normal;
+  color: #ffffff;
+}
+
+.keyboard__key--light:active {
+  background-color: #838383;
   color: #ffffff;
 }
 
@@ -98,8 +166,27 @@ body {
   color: #ffffff;
 }
 
+.keyboard__key--blue:hover {
+  border-color: #e40101;
+}
+
+.keyboard__key--blue:active {
+  background-color: #004e97;
+  color: #fff;
+}
+
 .keyboard__key--red {
   background-color: #e40101;
   font-weight: normal;
   color: #ffffff;
+}
+
+.keyboard__key--red:hover {
+  border-color: #2e76bf;
+}
+
+.keyboard__key--red:active {
+  background-color: #af0000;
+  border-color: #2e76bf;
+  color: #fff;
 }
