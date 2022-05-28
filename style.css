@@ -6,11 +6,46 @@ body {
   line-height: 1.2;
 }
 
-.calculator__keyboard {
+.calculator__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator__output {
+  margin-bottom: 18px;
+}
+
+.output {
+  padding: 8px;
+  width: calc((50px * 5) + (15px * 4));
+
+  background-color: #fff;
+  border: 3px solid #999998;
+  border-radius: 4px;
+}
+
+.output__display {
+  display: flex;
+  flex-direction: column;
+}
+
+.output__main {
+  width: 100;
+  font-size: 2rem;
+  text-align: end;
+  border-bottom: 2px solid #999998;
+}
+
+.output__result {
+  font-size: medium;
+  color: #999998;
+}
+
+.keyboard {
   display: grid;
   grid-template-columns: repeat(5, 50px);
   align-content: start;
-  gap: 20px;
+  gap: 15px;
 }
 
 .keyboard__key {
