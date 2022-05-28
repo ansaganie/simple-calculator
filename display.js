@@ -7,9 +7,12 @@ export default class Display {
 
   #handleDisplayBound;
 
+  #maxLength;
+
   constructor(eventBus) {
     this.#eventBus = eventBus;
 
+    this.#maxLength = 22;
     this.#main = document.querySelector('.output__display .output__main');
     this.#result = document.querySelector('.output__display .output__result');
     this.#handleDisplayBound = this.#handleDisplay.bind(this);
@@ -23,24 +26,34 @@ export default class Display {
     switch (type) {
       case 'main':
         this.#renderToMain(value);
+
         break;
+
       case 'result':
         this.#renderToResult(value);
+
         break;
-      case 'clear-main':
+
+      case 'clear-all':
         this.#clearMain();
-        break;
-      case 'clear-result':
         this.#clearResult();
+
         break;
+
       default:
         break;
     }
   }
 
   #renderToMain(text) {
-    if (text.length > 22) {
-      const bar = text.substring(text.length - 22);
+    if (!text.trim()) {
+      this.#clearMain();
+
+      return;
+    }
+
+    if (text.length > this.#maxLength) {
+      const bar = text.substring(text.length - this.#maxLength);
       this.#main.textContent = `... ${bar}`;
 
       return;
@@ -54,10 +67,16 @@ export default class Display {
   }
 
   #renderToResult(text) {
+    if (!text) {
+      this.#clearResult();
+
+      return;
+    }
+
     this.#result.textContent = text;
   }
 
   #clearResult() {
-    this.#result.textContent = '0';
+    this.#result.textContent = '-';
   }
 }

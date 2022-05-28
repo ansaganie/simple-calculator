@@ -8,6 +8,21 @@ const OPERATOR_SIGNS_MAP = {
   divide: '÷',
 };
 
+const CALCULATOR_FUNCTIONS = {
+  plus(first, second) {
+    return parseFloat(first) + parseFloat(second);
+  },
+  minus(first, second) {
+    return parseFloat(first) - parseFloat(second);
+  },
+  times(first, second) {
+    return parseFloat(first) * parseFloat(second);
+  },
+  divide(first, second) {
+    return parseFloat(first) / parseFloat(second);
+  },
+};
+
 export default class Calculator {
   #eventBus;
 
@@ -19,7 +34,7 @@ export default class Calculator {
 
   #result;
 
-  #calculators;
+  #operations;
 
   constructor(eventBus) {
     this.#eventBus = eventBus;
@@ -34,21 +49,7 @@ export default class Calculator {
     this.#currentIndex = 0;
     this.#expression = [];
     this.#result = 0;
-
-    this.#calculators = {
-      plus(first, second) {
-        return BigInt(first) + BigInt(second);
-      },
-      minus(first, second) {
-        return BigInt(first) - BigInt(second);
-      },
-      times(first, second) {
-        return BigInt(first) * BigInt(second);
-      },
-      divide(first, second) {
-        return BigInt(first) / BigInt(second);
-      },
-    };
+    this.#operations = CALCULATOR_FUNCTIONS;
   }
 
   #handleKeyboardClick(event) {
@@ -61,6 +62,10 @@ export default class Calculator {
 
       case 'operator':
         this.#handleOperator(value);
+        break;
+
+      case 'modifier':
+        this.#handleModifier(value);
         break;
 
       default:
@@ -76,7 +81,7 @@ export default class Calculator {
         const first = result || arr[index - 1];
         const second = arr[index + 1];
 
-        return this.#calculators[value](first, second);
+        return this.#operations[value](first, second);
       }
 
       return result;
@@ -110,17 +115,11 @@ export default class Calculator {
 
     this.#expression[this.#currentIndex] = `${currentNumber}${value}`;
 
-    this.#updateMainDisplay();
-  }
+    if (this.#expression.length >= 3) {
+      this.#runCalculation();
+    }
 
-  #handleEquals() {
-    this.#runCalculation();
-    this.#expression.push(this.#result);
     this.#updateMainDisplay();
-
-    this.#expression = [];
-    this.#currentIndex = 0;
-    this.#result = 0;
   }
 
   #handleOperator(operator) {
@@ -140,10 +139,90 @@ export default class Calculator {
       return;
     }
 
-    if (this.#expression.length > 3) {
-      this.#runCalculation();
+    this.#updateMainDisplay();
+  }
+
+  #handleModifier(value) {
+    if (this.#expression.length > 0) {
+      switch (value) {
+        case 'dot':
+          this.#handleDot();
+
+          break;
+
+        case 'plusminus':
+          this.#handlePlusminus();
+
+          break;
+
+        case 'delete':
+          this.#handleDelete();
+
+          break;
+
+        case 'clear':
+          this.#handleClear();
+
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  #handleEquals() {
+    this.#runCalculation();
+    this.#expression.push(this.#result);
+    this.#updateMainDisplay();
+
+    this.#expression = [];
+    this.#currentIndex = 0;
+    this.#result = 0;
+  }
+
+  #handleDot() {
+    const lastElementIndex = this.#expression.length - 1;
+    const lastElement = this.#expression[lastElementIndex];
+
+    if (!lastElement.includes('.')) {
+      this.#expression[lastElementIndex] = `${lastElement}.`;
     }
 
     this.#updateMainDisplay();
+  }
+
+  #handlePlusminus() {
+    const lastElementIndex = this.#expression.length - 1;
+    let lastElement = this.#expression[lastElementIndex];
+
+    if (!OPERATORS.has(lastElement)) {
+      if (!lastElement.includes('-')) {
+        lastElement = `-${lastElement}`;
+      } else {
+        lastElement = lastElement.substring(1);
+      }
+    }
+
+    this.#expression[lastElementIndex] = lastElement;
+    this.#updateMainDisplay();
+  }
+
+  #handleDelete() {
+    const lastElementIndex = this.#expression.length - 1;
+    const lastElement = this.#expression[lastElementIndex];
+
+    if (!OPERATORS.has(lastElement)) {
+      this.#expression[lastElementIndex] = lastElement.slice(0, -1);
+      this.#updateMainDisplay();
+    }
+  }
+
+  #handleClear() {
+    this.#eventBus.trigger(this.#eventBus.display, { type: 'clear-all' });
+
+    this.#expression = [];
+    this.#currentIndex = 0;
+    this.#result = 0;
   }
 }
