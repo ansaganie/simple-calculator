@@ -1,8 +1,70 @@
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: x-large;
+  line-height: 1.2;
+}
+
+.calculator__keyboard {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  align-content: start;
+  gap: 20px;
+}
+
+.keyboard__key {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #eeeeee;
+  border: 1px solid #dddfe1;
+  border-radius: 4px;
+
+  color: #1d456c;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.keyboard__key:active {
+  background-color: #bdbdbd;
+  color: #3365bc;
+}
+
+.keyboard__key:hover {
+  border: 2px solid #848687;
+}
+
+.keyboard__key--tall {
+  height: 120px;
+  grid-column: 5 / 5;
+  grid-row: 3 / 5;
+}
+
+.keyboard__key--dark {
+  background-color: #7f7f7f;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.keyboard__key--light {
+  background-color: #afaeae;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.keyboard__key--blue {
+  background-color: #005db2;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.keyboard__key--red {
+  background-color: #e40101;
+  font-weight: normal;
+  color: #ffffff;
 }
