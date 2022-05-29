@@ -131,7 +131,7 @@ export default class Calculator {
 
       if (OPERATORS.has(value) && !isLastElem) {
         const first = result ?? arr[index - 1];
-        const second = arr[index + 1];
+        const second = arr[index + 1] || '0';
 
         if (value === 'equals') {
           return result;
@@ -166,16 +166,20 @@ export default class Calculator {
       );
     }
 
-    const value = this.#expression.reduce((result, elem) => {
+    const value = this.#printExpression();
+    const detail = { type: 'main', value };
+
+    this.#eventBus.trigger(this.#eventBus.display, detail);
+  }
+
+  #printExpression() {
+    return this.#expression.reduce((result, elem) => {
       if (OPERATORS.has(elem)) {
         return `${result} ${OPERATOR_SIGNS[elem]}`;
       }
 
       return `${result} ${elem}`;
     }, '');
-    const detail = { type: 'main', value };
-
-    this.#eventBus.trigger(this.#eventBus.display, detail);
   }
 
   #pushExpression(value) {
@@ -275,15 +279,25 @@ export default class Calculator {
     const isEqualLoop = this.#expression.length === 1 && this.#currentIndex === -1;
 
     if (this.#expression.length >= 3) {
+      this.#pushExpression('=');
+      this.#pushExpression(this.#result.toString());
+      this.#eventBus.trigger(
+        this.#eventBus.display,
+        {
+          type: 'history',
+          value: this.#printExpression(),
+        },
+      );
+
       this.#expression = [];
 
-      this.#pushExpression(this.#result);
+      this.#pushExpression(this.#result.toString());
       this.#currentIndex = -1;
     } else if (isEqualLoop) {
       const lastElement = this.#popLastElement();
 
       this.#pushExpression(
-        this.#operations[this.#lastOperator](lastElement, this.#lastNumber),
+        this.#operations[this.#lastOperator](lastElement, this.#lastNumber).toString(),
       );
 
       this.#currentIndex = -1;
@@ -317,8 +331,10 @@ export default class Calculator {
   #handleDelete() {
     const lastElement = this.#popLastElement();
 
-    if (!OPERATORS.has(lastElement)) {
+    if (lastElement && !OPERATORS.has(lastElement)) {
       this.#pushExpression(lastElement.slice(0, -1));
+    } else {
+      this.#pushExpression(lastElement);
     }
   }
 

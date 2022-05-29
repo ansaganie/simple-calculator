@@ -2,15 +2,19 @@ export default class Display {
   #eventBus;
   #main;
   #result;
+  #history;
   #handleDisplayBound;
   #maxLength;
+  #historyMaxLength;
 
   constructor(eventBus) {
     this.#eventBus = eventBus;
 
     this.#maxLength = 18;
+    this.#historyMaxLength = 32;
     this.#main = document.querySelector('.output__display .output__main');
-    this.#result = document.querySelector('.output__display .output__result');
+    this.#result = document.querySelector('.output__footer .output__result');
+    this.#history = document.querySelector('.output__footer .output__history');
     this.#handleDisplayBound = this.#handleDisplay.bind(this);
   }
 
@@ -32,9 +36,16 @@ export default class Display {
 
         break;
 
+      case 'history':
+        this.#pushHistory(value);
+
+        break;
+
       case 'clear-all':
         this.#clearMain();
         this.#clearResult();
+        this.#clearHistory();
+
         break;
 
       case 'clear-result':
@@ -48,20 +59,34 @@ export default class Display {
   }
 
   #renderToMain(text) {
-    if (!text.trim()) {
+    let result = text.trim();
+    if (!result) {
       this.#clearMain();
 
       return;
     }
 
     if (text.length > this.#maxLength) {
-      const bar = text.substring(text.length - this.#maxLength);
-      this.#main.textContent = `... ${bar}`;
+      result = `... ${text.substring(text.length - this.#maxLength)}`;
+    }
+
+    this.#main.textContent = result;
+  }
+
+  #pushHistory(text) {
+    let result = text.trim();
+
+    if (!text.trim()) {
+      this.#clearHistory();
 
       return;
     }
 
-    this.#main.textContent = text;
+    if (text.length > this.#maxLength) {
+      result = `... ${text.substring(text.length - this.#historyMaxLength)}`;
+    }
+
+    this.#history.textContent = result;
   }
 
   #clearMain() {
@@ -80,5 +105,9 @@ export default class Display {
 
   #clearResult() {
     this.#result.textContent = '-';
+  }
+
+  #clearHistory() {
+    this.#history.textContent = '';
   }
 }

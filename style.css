@@ -98,8 +98,24 @@ body {
   font-size: 1.5rem;
 }
 
+.output__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .output__result {
   font-size: medium;
+  color: #999998;
+}
+
+.output__history {
+  width: 100%;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: end;
+  font-size: small;
   color: #999998;
 }
 
