@@ -11,7 +11,7 @@
       <div class="calculator__bg">
         <div class="calculator__body">
           <section class="calculator__header">
-            <button class="calculator__bookmark">
+            <button class="calculator__bookmark" onclick="alert('Чтобы добавить в закладки нажмите Ctrl + D')">
               <img src="./assets/yellow_star.svg" alt="Star icon" width="12" height="12" />
               <span> Добавить в закладки </span>
             </button>
@@ -20,9 +20,26 @@
             </div>
           </section>
           <section class="calculator__output output">
+            <div class="output__memory">
+              <button class="memory__current">
+                <span class="memory__name">M1:</span>
+                <span class="memory__value">0</span>
+              </button>
+              <button class="memory__copy">
+                <img src="./assets/copy.svg" width="10" height="10"  alt="Copy icon">
+              </button>
+            </div>
             <div class="output__display">
               <output class="output__main">0</output>
               <output class="output__result">&minus;</output>
+            </div>
+          </section>
+          <section class="calculator__memory">
+            <div class="memory__container">
+              <button class="memory__button" id="clear">MC</button>
+              <button class="memory__button" id="put">MR</button>
+              <button class="memory__button" id="save-minus">M&minus;</button>
+              <button class="memory__button" id="save-plus">M&plus;</button>
             </div>
           </section>
           <section class="calculator__controls">

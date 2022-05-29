@@ -116,6 +116,10 @@ export default class Calculator {
         this.#handleControl(value);
         break;
 
+      case 'swap':
+        this.#handleSwap(value);
+        break;
+
       default:
         break;
     }
@@ -133,7 +137,7 @@ export default class Calculator {
           return result;
         }
 
-        return this.#operations[value](first, second);
+        return this.#operations[value](first.toString(), second);
       }
 
       return result;
@@ -254,6 +258,17 @@ export default class Calculator {
     if (type === 'clear') {
       this.#handleClear();
     }
+  }
+
+  #handleSwap(value) {
+    const lastElement = this.#popLastElement();
+
+    if (OPERATORS.has(lastElement)) {
+      this.#pushExpression(lastElement);
+    }
+
+    this.#pushExpression(value);
+    this.#currentIndex -= 1;
   }
 
   #handleEquals() {

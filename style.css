@@ -198,3 +198,40 @@ body {
   border-color: #2e76bf;
   color: #fff;
 }
+
+.output__memory {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.memory__container {
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.memory__current,
+.memory__copy,
+.memory__button {
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-self: center;
+
+  background-color: transparent;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #afaeae;
+
+  cursor: pointer;
+}
+
+.memory__current:hover,
+.memory__copy:hover,
+.memory__button:hover {
+  color: #af0000;
+}
