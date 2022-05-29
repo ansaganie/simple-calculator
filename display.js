@@ -8,7 +8,7 @@ export default class Display {
   constructor(eventBus) {
     this.#eventBus = eventBus;
 
-    this.#maxLength = 20;
+    this.#maxLength = 18;
     this.#main = document.querySelector('.output__display .output__main');
     this.#result = document.querySelector('.output__display .output__result');
     this.#handleDisplayBound = this.#handleDisplay.bind(this);

@@ -25,5 +25,7 @@ export default class VirtualKeyboard {
     const detail = { type: type.replace('type-', ''), value };
 
     this.#eventBus.trigger(this.#eventBus.keyboard, detail);
+
+    element.blur();
   }
 }

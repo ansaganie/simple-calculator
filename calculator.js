@@ -28,12 +28,21 @@ const CALCULATOR_FUNCTIONS = {
     return parseFloat(first) + parseFloat(second);
   },
   minus(first, second) {
+    console.log(first, second);
     return parseFloat(first) - parseFloat(second);
   },
   times(first, second) {
     return parseFloat(first) * parseFloat(second);
   },
   divide(first, second) {
+    console.log(first, second);
+
+    const firstOperand = parseFloat(first);
+
+    if (firstOperand === 0) {
+      return 'error';
+    }
+
     return parseFloat(first) / parseFloat(second);
   },
 };
@@ -47,6 +56,7 @@ export default class Calculator {
   #operations;
   #lastOperator;
   #lastNumber;
+  #isError;
 
   constructor(eventBus) {
     this.#eventBus = eventBus;
@@ -54,6 +64,7 @@ export default class Calculator {
     this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
     this.#reset();
     this.#operations = CALCULATOR_FUNCTIONS;
+    this.#isError = false;
   }
 
   init() {
@@ -67,7 +78,12 @@ export default class Calculator {
     const { type, value } = event.detail;
 
     if (this.#currentIndex === -1 && value !== 'equals') {
+      this.#currentIndex = 0;
+    }
+
+    if (this.#isError && value !== 'equals') {
       this.#reset();
+      this.#isError = false;
     }
 
     switch (type) {
@@ -97,7 +113,7 @@ export default class Calculator {
       const isLastElem = arr.length === index + 1;
 
       if (OPERATORS.has(value) && !isLastElem) {
-        const first = result || arr[index - 1];
+        const first = result ?? arr[index - 1];
         const second = arr[index + 1];
 
         if (value === 'equals') {
@@ -108,7 +124,11 @@ export default class Calculator {
       }
 
       return result;
-    }, 0);
+    });
+
+    if (this.#result === 'error') {
+      this.#isError = true;
+    }
   }
 
   #updateMainDisplay() {
@@ -281,6 +301,5 @@ export default class Calculator {
   #reset() {
     this.#currentIndex = 0;
     this.#expression = [];
-    this.#result = 0;
   }
 }
