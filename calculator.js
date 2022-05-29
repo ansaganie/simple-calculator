@@ -24,19 +24,30 @@ const NUMBER_SIGNS = {
 const NUMBERS = new Set(Object.keys(NUMBER_SIGNS));
 
 const CALCULATOR_FUNCTIONS = {
+  getPower(first, second) {
+    const firstPower = first.includes('.') ? first.split('.')[1].length : 1;
+    const secondPower = second.includes('.') ? first.split('.')[1].length : 1;
+
+    const power = 10 ** Math.max(firstPower, secondPower);
+    const firstPowered = parseFloat(first) * power;
+    const secondPowered = parseFloat(second) * power;
+
+    return [firstPowered, secondPowered, power];
+  },
   plus(first, second) {
-    return parseFloat(first) + parseFloat(second);
+    const [firstPowered, secondPowered, power] = this.getPower(first, second);
+
+    return (firstPowered + secondPowered) / power;
   },
   minus(first, second) {
-    console.log(first, second);
-    return parseFloat(first) - parseFloat(second);
+    const [firstPowered, secondPowered, power] = this.getPower(first, second);
+
+    return (firstPowered - secondPowered) / power;
   },
   times(first, second) {
     return parseFloat(first) * parseFloat(second);
   },
   divide(first, second) {
-    console.log(first, second);
-
     const firstOperand = parseFloat(first);
 
     if (firstOperand === 0) {
@@ -46,6 +57,8 @@ const CALCULATOR_FUNCTIONS = {
     return parseFloat(first) / parseFloat(second);
   },
 };
+
+const DECIMAL_PLACES = 10 ** 8;
 
 export default class Calculator {
   #eventBus;
@@ -128,7 +141,11 @@ export default class Calculator {
 
     if (this.#result === 'error') {
       this.#isError = true;
+
+      return;
     }
+
+    this.#result = Math.round(this.#result * DECIMAL_PLACES) / DECIMAL_PLACES;
   }
 
   #updateMainDisplay() {
