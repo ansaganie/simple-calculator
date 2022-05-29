@@ -1,4 +1,4 @@
-const OPERATOR_SIGNS = {
+const OperatorSigns = {
   equals: '=',
   plus: '+',
   minus: '-',
@@ -6,9 +6,9 @@ const OPERATOR_SIGNS = {
   divide: '÷',
 };
 
-const OPERATORS = new Set(Object.keys(OPERATOR_SIGNS));
+const Operators = new Set(Object.keys(OperatorSigns));
 
-const NUMBER_SIGNS = {
+const NumberSigns = {
   one: '1',
   two: '2',
   three: '3',
@@ -21,9 +21,9 @@ const NUMBER_SIGNS = {
   zero: '0',
 };
 
-const NUMBERS = new Set(Object.keys(NUMBER_SIGNS));
+const Numbers = new Set(Object.keys(NumberSigns));
 
-const CALCULATOR_FUNCTIONS = {
+const CalculatorFunctions = {
   getPower(first, second) {
     const firstPower = first.includes('.') ? first.split('.')[1].length : 1;
     const secondPower = second.includes('.') ? first.split('.')[1].length : 1;
@@ -76,7 +76,7 @@ export default class Calculator {
 
     this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
     this.#reset();
-    this.#operations = CALCULATOR_FUNCTIONS;
+    this.#operations = CalculatorFunctions;
     this.#isError = false;
   }
 
@@ -129,7 +129,7 @@ export default class Calculator {
     this.#result = this.#expression.reduce((result, value, index, arr) => {
       const isLastElem = arr.length === index + 1;
 
-      if (OPERATORS.has(value) && !isLastElem) {
+      if (Operators.has(value) && !isLastElem) {
         const first = result ?? arr[index - 1];
         const second = arr[index + 1] || '0';
 
@@ -174,8 +174,8 @@ export default class Calculator {
 
   #printExpression() {
     return this.#expression.reduce((result, elem) => {
-      if (OPERATORS.has(elem)) {
-        return `${result} ${OPERATOR_SIGNS[elem]}`;
+      if (Operators.has(elem)) {
+        return `${result} ${OperatorSigns[elem]}`;
       }
 
       return `${result} ${elem}`;
@@ -204,8 +204,8 @@ export default class Calculator {
   #handleNumber(value) {
     const currentNumber = this.#expression[this.#currentIndex] || '';
 
-    if (NUMBERS.has(value)) {
-      const result = `${currentNumber}${NUMBER_SIGNS[value]}`;
+    if (Numbers.has(value)) {
+      const result = `${currentNumber}${NumberSigns[value]}`;
 
       this.#updateExpression(this.#currentIndex, result);
       this.#lastNumber = result;
@@ -222,7 +222,7 @@ export default class Calculator {
 
       const lastElement = this.#popLastElement();
 
-      if (OPERATORS.has(lastElement)) {
+      if (Operators.has(lastElement)) {
         this.#pushExpression(operator);
       } else {
         this.#pushExpression(lastElement);
@@ -267,7 +267,7 @@ export default class Calculator {
   #handleSwap(value) {
     const lastElement = this.#popLastElement();
 
-    if (OPERATORS.has(lastElement)) {
+    if (Operators.has(lastElement)) {
       this.#pushExpression(lastElement);
     }
 
@@ -307,7 +307,7 @@ export default class Calculator {
   #handleDot() {
     const lastElement = this.#popLastElement();
 
-    if (!lastElement.includes('.') && !OPERATORS.has(lastElement)) {
+    if (!lastElement.includes('.') && !Operators.has(lastElement)) {
       this.#pushExpression(`${lastElement}.`);
     } else {
       this.#pushExpression(lastElement);
@@ -317,7 +317,7 @@ export default class Calculator {
   #handlePlusminus() {
     let lastElement = this.#popLastElement();
 
-    if (!OPERATORS.has(lastElement)) {
+    if (!Operators.has(lastElement)) {
       if (!lastElement.includes('-')) {
         lastElement = `-${lastElement}`;
       } else {
@@ -331,7 +331,7 @@ export default class Calculator {
   #handleDelete() {
     const lastElement = this.#popLastElement();
 
-    if (lastElement && !OPERATORS.has(lastElement)) {
+    if (lastElement && !Operators.has(lastElement)) {
       this.#pushExpression(lastElement.slice(0, -1));
     } else {
       this.#pushExpression(lastElement);

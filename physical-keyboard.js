@@ -1,4 +1,4 @@
-const KEYCODE_MAPPER = {
+const KeycodeMapper = {
   Digit1: {
     type: 'number',
     value: 'one',
@@ -166,9 +166,9 @@ const KEYCODE_MAPPER = {
   },
 };
 
-const KEYCODE = new Set(Object.keys(KEYCODE_MAPPER));
+const Keycode = new Set(Object.keys(KeycodeMapper));
 
-const KEYCODE_MAPPER_SHIFT = {
+const KeycodeMapperShift = {
   Equal: {
     type: 'operator',
     value: 'plus',
@@ -191,9 +191,9 @@ const KEYCODE_MAPPER_SHIFT = {
   },
 };
 
-const KEYCODE_SHIFT = new Set(Object.keys(KEYCODE_MAPPER_SHIFT));
+const KeycodeShift = new Set(Object.keys(KeycodeMapperShift));
 
-const SHIFT_CODES = new Set(['ShiftLeft', 'ShiftRight']);
+const ShiftCodes = new Set(['ShiftLeft', 'ShiftRight']);
 
 export default class PhysicalKeyboard {
   #eventBus;
@@ -216,21 +216,21 @@ export default class PhysicalKeyboard {
   #handleKeydown(event) {
     const CODE = event.code;
 
-    if (SHIFT_CODES.has(CODE)) {
+    if (ShiftCodes.has(CODE)) {
       this.#isShiftDown = true;
 
       return;
     }
 
-    if (!this.#isShiftDown && KEYCODE.has(CODE)) {
-      const key = KEYCODE_MAPPER[CODE];
+    if (!this.#isShiftDown && Keycode.has(CODE)) {
+      const key = KeycodeMapper[CODE];
 
       this.#eventBus.trigger(this.#eventBus.keyboard, key);
       document.querySelector(`#${key.value}`).classList.add(key.activeClass);
     }
 
-    if (this.#isShiftDown && KEYCODE_SHIFT.has(CODE)) {
-      const key = KEYCODE_MAPPER_SHIFT[CODE];
+    if (this.#isShiftDown && KeycodeShift.has(CODE)) {
+      const key = KeycodeMapperShift[CODE];
 
       this.#eventBus.trigger(this.#eventBus.keyboard, key);
       document.querySelector(`#${key.value}`).classList.add(key.activeClass);
@@ -241,14 +241,14 @@ export default class PhysicalKeyboard {
     const CODE = event.code;
     let key;
 
-    if (SHIFT_CODES.has(CODE)) {
+    if (ShiftCodes.has(CODE)) {
       this.#isShiftDown = false;
     }
 
     if (this.#isShiftDown) {
-      key = KEYCODE_MAPPER_SHIFT[CODE];
+      key = KeycodeMapperShift[CODE];
     } else {
-      key = KEYCODE_MAPPER[CODE];
+      key = KeycodeMapper[CODE];
     }
 
     if (key) {
