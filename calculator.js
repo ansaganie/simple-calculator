@@ -45,14 +45,14 @@ export default class Calculator {
   #expression;
   #result;
   #operations;
+  #lastOperator;
+  #lastNumber;
 
   constructor(eventBus) {
     this.#eventBus = eventBus;
 
     this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
-    this.#currentIndex = 0;
-    this.#expression = [];
-    this.#result = 0;
+    this.#reset();
     this.#operations = CALCULATOR_FUNCTIONS;
   }
 
@@ -65,6 +65,10 @@ export default class Calculator {
 
   #handleKeyboardClick(event) {
     const { type, value } = event.detail;
+
+    if (this.#currentIndex === -1 && value !== 'equals') {
+      this.#reset();
+    }
 
     switch (type) {
       case 'number':
@@ -105,16 +109,20 @@ export default class Calculator {
 
       return result;
     }, 0);
-
-    this.#eventBus.trigger(
-      this.#eventBus.display,
-      { type: 'result', value: this.#result },
-    );
   }
 
   #updateMainDisplay() {
     if (this.#expression.length >= 3) {
       this.#runCalculation();
+      this.#eventBus.trigger(
+        this.#eventBus.display,
+        { type: 'result', value: this.#result },
+      );
+    } else {
+      this.#eventBus.trigger(
+        this.#eventBus.display,
+        { type: 'clear-result' },
+      );
     }
 
     const value = this.#expression.reduce((result, elem) => {
@@ -152,7 +160,10 @@ export default class Calculator {
     const currentNumber = this.#expression[this.#currentIndex] || '';
 
     if (NUMBERS.has(value)) {
-      this.#updateExpression(this.#currentIndex, `${currentNumber}${NUMBER_SIGNS[value]}`);
+      const result = `${currentNumber}${NUMBER_SIGNS[value]}`;
+
+      this.#updateExpression(this.#currentIndex, result);
+      this.#lastNumber = result;
     }
   }
 
@@ -173,6 +184,8 @@ export default class Calculator {
         this.#pushExpression(operator);
         this.#currentIndex += 1;
       }
+
+      this.#lastOperator = operator;
     }
   }
 
@@ -207,21 +220,31 @@ export default class Calculator {
   }
 
   #handleEquals() {
-    if (this.#expression.length >= 3) {
-      this.#pushExpression('equals');
-      this.#pushExpression(this.#result);
+    const isEqualLoop = this.#expression.length === 1 && this.#currentIndex === -1;
 
+    if (this.#expression.length >= 3) {
       this.#expression = [];
-      this.#currentIndex = 0;
-      this.#result = 0;
+
+      this.#pushExpression(this.#result);
+      this.#currentIndex = -1;
+    } else if (isEqualLoop) {
+      const lastElement = this.#popLastElement();
+
+      this.#pushExpression(
+        this.#operations[this.#lastOperator](lastElement, this.#lastNumber),
+      );
+
+      this.#currentIndex = -1;
     }
   }
 
   #handleDot() {
     const lastElement = this.#popLastElement();
 
-    if (!lastElement.includes('.')) {
+    if (!lastElement.includes('.') && !OPERATORS.has(lastElement)) {
       this.#pushExpression(`${lastElement}.`);
+    } else {
+      this.#pushExpression(lastElement);
     }
   }
 
@@ -252,6 +275,12 @@ export default class Calculator {
 
     this.#expression = [];
     this.#currentIndex = 0;
+    this.#result = 0;
+  }
+
+  #reset() {
+    this.#currentIndex = 0;
+    this.#expression = [];
     this.#result = 0;
   }
 }

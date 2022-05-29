@@ -35,6 +35,10 @@ export default class Display {
       case 'clear-all':
         this.#clearMain();
         this.#clearResult();
+        break;
+
+      case 'clear-result':
+        this.#clearResult();
 
         break;
 
