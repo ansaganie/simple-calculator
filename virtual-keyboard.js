@@ -1,8 +1,6 @@
 export default class VirtualKeyboard {
   #keyboard;
-
   #eventBus;
-
   #handleKeyboardClickBound;
 
   constructor(eventBus) {
@@ -10,6 +8,9 @@ export default class VirtualKeyboard {
     this.#eventBus = eventBus;
 
     this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
+  }
+
+  init() {
     this.#keyboard.addEventListener('click', this.#handleKeyboardClickBound);
   }
 

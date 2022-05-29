@@ -197,11 +197,8 @@ const SHIFT_CODES = new Set(['ShiftLeft', 'ShiftRight']);
 
 export default class PhysicalKeyboard {
   #eventBus;
-
   #handleKeydownBound;
-
   #handleKeyupBound;
-
   #isShiftDown;
 
   constructor(eventBus) {
@@ -209,7 +206,9 @@ export default class PhysicalKeyboard {
     this.#handleKeydownBound = this.#handleKeydown.bind(this);
     this.#handleKeyupBound = this.#handleUp.bind(this);
     this.#isShiftDown = false;
+  }
 
+  init() {
     document.addEventListener('keydown', this.#handleKeydownBound);
     document.addEventListener('keyup', this.#handleKeyupBound);
   }

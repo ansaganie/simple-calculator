@@ -8,8 +8,7 @@ import PhysicalKeyboard from './physical-keyboard';
 
 const eventBus = new EventBus();
 
-/* eslint-disable no-new */
-new Display(eventBus);
-new VirtualKeyboard(eventBus);
-new PhysicalKeyboard(eventBus);
-new Calculator(eventBus);
+new Display(eventBus).init();
+new VirtualKeyboard(eventBus).init();
+new PhysicalKeyboard(eventBus).init();
+new Calculator(eventBus).init();

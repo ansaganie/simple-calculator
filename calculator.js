@@ -40,31 +40,27 @@ const CALCULATOR_FUNCTIONS = {
 
 export default class Calculator {
   #eventBus;
-
   #handleKeyboardClickBound;
-
   #currentIndex;
-
   #expression;
-
   #result;
-
   #operations;
 
   constructor(eventBus) {
     this.#eventBus = eventBus;
 
     this.#handleKeyboardClickBound = this.#handleKeyboardClick.bind(this);
-
-    this.#eventBus.subscribe(
-      this.#eventBus.keyboard,
-      this.#handleKeyboardClickBound,
-    );
-
     this.#currentIndex = 0;
     this.#expression = [];
     this.#result = 0;
     this.#operations = CALCULATOR_FUNCTIONS;
+  }
+
+  init() {
+    this.#eventBus.subscribe(
+      this.#eventBus.keyboard,
+      this.#handleKeyboardClickBound,
+    );
   }
 
   #handleKeyboardClick(event) {
@@ -100,6 +96,10 @@ export default class Calculator {
         const first = result || arr[index - 1];
         const second = arr[index + 1];
 
+        if (value === 'equals') {
+          return result;
+        }
+
         return this.#operations[value](first, second);
       }
 
@@ -113,6 +113,10 @@ export default class Calculator {
   }
 
   #updateMainDisplay() {
+    if (this.#expression.length >= 3) {
+      this.#runCalculation();
+    }
+
     const value = this.#expression.reduce((result, elem) => {
       if (OPERATORS.has(elem)) {
         return `${result} ${OPERATOR_SIGNS[elem]}`;
@@ -125,43 +129,50 @@ export default class Calculator {
     this.#eventBus.trigger(this.#eventBus.display, detail);
   }
 
-  #handleNumber(value) {
-    if (!this.#expression[this.#currentIndex]) {
-      this.#expression[this.#currentIndex] = '';
-    }
-
-    const currentNumber = this.#expression[this.#currentIndex];
-
-    if (NUMBERS.has(value)) {
-      this.#expression[this.#currentIndex] = `${currentNumber}${NUMBER_SIGNS[value]}`;
-    }
-
-    if (this.#expression.length >= 3) {
-      this.#runCalculation();
-    }
+  #pushExpression(value) {
+    this.#expression.push(value);
+    this.#currentIndex += 1;
 
     this.#updateMainDisplay();
   }
 
+  #updateExpression(index, update) {
+    this.#expression[index] = update;
+
+    this.#updateMainDisplay();
+  }
+
+  #popLastElement() {
+    this.#currentIndex -= 1;
+
+    return this.#expression.pop();
+  }
+
+  #handleNumber(value) {
+    const currentNumber = this.#expression[this.#currentIndex] || '';
+
+    if (NUMBERS.has(value)) {
+      this.#updateExpression(this.#currentIndex, `${currentNumber}${NUMBER_SIGNS[value]}`);
+    }
+  }
+
   #handleOperator(operator) {
     if (this.#expression.length > 0) {
-      const lastElementIndex = this.#expression.length - 1;
-      const lastElement = this.#expression[lastElementIndex];
-
       if (operator === 'equals') {
         this.#handleEquals();
 
         return;
       }
 
-      if (OPERATORS.has(lastElement)) {
-        this.#expression[lastElementIndex] = operator;
-      } else {
-        this.#expression.push(operator);
-        this.#currentIndex += 2;
-      }
+      const lastElement = this.#popLastElement();
 
-      this.#updateMainDisplay();
+      if (OPERATORS.has(lastElement)) {
+        this.#pushExpression(operator);
+      } else {
+        this.#pushExpression(lastElement);
+        this.#pushExpression(operator);
+        this.#currentIndex += 1;
+      }
     }
   }
 
@@ -197,11 +208,8 @@ export default class Calculator {
 
   #handleEquals() {
     if (this.#expression.length >= 3) {
-      this.#expression.push('equals');
-      this.#runCalculation();
-      this.#expression.push(this.#result);
-
-      this.#updateMainDisplay();
+      this.#pushExpression('equals');
+      this.#pushExpression(this.#result);
 
       this.#expression = [];
       this.#currentIndex = 0;
@@ -210,20 +218,15 @@ export default class Calculator {
   }
 
   #handleDot() {
-    const lastElementIndex = this.#expression.length - 1;
-    const lastElement = this.#expression[lastElementIndex];
+    const lastElement = this.#popLastElement();
 
     if (!lastElement.includes('.')) {
-      this.#expression[lastElementIndex] = `${lastElement}.`;
+      this.#pushExpression(`${lastElement}.`);
     }
-
-    this.#updateMainDisplay();
   }
 
   #handlePlusminus() {
-    console.log('plusminus');
-    const lastElementIndex = this.#expression.length - 1;
-    let lastElement = this.#expression[lastElementIndex];
+    let lastElement = this.#popLastElement();
 
     if (!OPERATORS.has(lastElement)) {
       if (!lastElement.includes('-')) {
@@ -233,19 +236,14 @@ export default class Calculator {
       }
     }
 
-    this.#expression[lastElementIndex] = lastElement;
-
-    this.#runCalculation();
-    this.#updateMainDisplay();
+    this.#pushExpression(lastElement);
   }
 
   #handleDelete() {
-    const lastElementIndex = this.#expression.length - 1;
-    const lastElement = this.#expression[lastElementIndex];
+    const lastElement = this.#popLastElement();
 
     if (!OPERATORS.has(lastElement)) {
-      this.#expression[lastElementIndex] = lastElement.slice(0, -1);
-      this.#updateMainDisplay();
+      this.#pushExpression(lastElement.slice(0, -1));
     }
   }
 

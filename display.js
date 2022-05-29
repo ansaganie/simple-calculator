@@ -1,12 +1,8 @@
 export default class Display {
   #eventBus;
-
   #main;
-
   #result;
-
   #handleDisplayBound;
-
   #maxLength;
 
   constructor(eventBus) {
@@ -16,7 +12,9 @@ export default class Display {
     this.#main = document.querySelector('.output__display .output__main');
     this.#result = document.querySelector('.output__display .output__result');
     this.#handleDisplayBound = this.#handleDisplay.bind(this);
+  }
 
+  init() {
     this.#eventBus.subscribe(this.#eventBus.display, this.#handleDisplayBound);
   }
 

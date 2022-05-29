@@ -90,9 +90,12 @@ body {
 
 .output__main {
   width: 100%;
-  font-size: 1.5rem;
-  text-align: end;
   border-bottom: 2px solid #999998;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: end;
+  font-size: 1.5rem;
 }
 
 .output__result {

@@ -1,8 +1,6 @@
 export default class EventBus {
   #bus;
-
   keyboardClick;
-
   display;
 
   constructor() {
