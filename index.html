@@ -11,6 +11,9 @@
   <body>
     <main class="calculator">
       <div class="calculator__bg">
+        <header>
+          <h1 class="calculator__heading">Калькулятор онлайн</h1>
+        </header>
         <div class="calculator__body">
           <section class="calculator__header">
             <button class="calculator__bookmark" onclick="alert('Чтобы добавить в закладки нажмите Ctrl + D')">
@@ -88,6 +91,28 @@
             </div>
           </section>
         </div>
+        <footer>
+          <ul class="instruction calculator__instruction">
+            <li class="instruction__item">
+              <button class="keyboard__key keyboard__key--red">C</button>
+              <span class="instruction__line">
+                &mdash; <code>"Shift" + "Backspace"</code> или <code>"Delete"</code>
+              </span>
+            </li>
+            <li class="instruction__item">
+              <button class="keyboard__key keyboard__key--light">&plusmn;</button>
+              <span class="instruction__line">
+                &mdash; <code>"Shift" + клавиш "-"</code>
+              </span>
+            </li>
+            <li class="instruction__item">
+              <button class="keyboard__key" id="dot">.</button>
+              <span class="instruction__line">
+                &mdash; <code>клавиш "точка" на английской раскладке</code>  или <code>точка на цифровой клавиатуре</code>
+              </span>
+            </li>
+          </ul>
+        </footer>
       </div>
     </main>
     <script type="module" src="./main.js"></script>

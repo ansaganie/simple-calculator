@@ -248,6 +248,11 @@ const KeycodeMapperShift = {
     value: 'plusminus',
     activeClass: 'keyboard__key--light-active',
   },
+  NumpadSubtract: {
+    type: 'modifier',
+    value: 'plusminus',
+    activeClass: 'keyboard__key--light-active',
+  },
   Backspace: {
     type: 'control',
     value: 'clear',
